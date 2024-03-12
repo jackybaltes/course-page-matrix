@@ -1,0 +1,17 @@
+.lectureTable {
+    border-collapse: collapse;
+}
+
+.lectureRow {
+    width:100%;
+}
+
+.lectureTitle {
+    width: 70%;
+    border-style: solid;
+}
+
+.lecturePosted {
+    width: 30%;
+    border-style: solid;
+}
