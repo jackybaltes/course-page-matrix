@@ -5,7 +5,7 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { useEffect } from "react";
 import * as sdk from "matrix-js-sdk";
-
+import LectureEntryRow from "../components/lecture_entry_row";
 
 
 async function getMessages( client:sdk.MatrixClient, roomId: string ) {
@@ -64,6 +64,7 @@ async function getMessages( client:sdk.MatrixClient, roomId: string ) {
 export default function Home() {
 
   useEffect( () => {
+    return;
     console.log("Home.useEffect");
 
     const client = sdk.createClient( {
@@ -103,12 +104,37 @@ export default function Home() {
     });
   });
 
+  let lectures=[
+    {key: "1", title: "Test1", url:"https:1.html", posted: "20-2-2024"}
+  ];
+
   return (
     <main className={styles.main}>
       <h1 className={styles.title}>Complex Motion Planning</h1>
 
       <h2 className={styles.h2}>Lectures</h2>
       <p>Link to <a href="https://colab.research.google.com/">Google collaboratory</a> notebooks used in the course.</p>
+
+      <table className={styles.lectureTable}>
+        <thead>
+          <tr>
+            <th>
+              Title
+            </th>
+            <th>
+              Posted
+            </th>
+          </tr>
+        </thead>
+      <tbody>
+      {
+        lectures.map( (item) => (
+          <LectureEntryRow key={item.key} title={item.title} url={item.url} posted={item.posted} />
+        ))
+      }
+      </tbody>
+      </table>
+
 
       <h2 className={styles.h2}>Assignments</h2>
       <p>Assignments should be done individually.</p>

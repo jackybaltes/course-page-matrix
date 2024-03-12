@@ -105,6 +105,10 @@
   transform: translateZ(0);
 }
 
+.lectureTable {
+  border-collapse: collapse;
+}
+
 .logo {
   position: relative;
 }
