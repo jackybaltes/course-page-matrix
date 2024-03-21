@@ -6,12 +6,15 @@
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
   --palette1: #f8f5ec;
-  --palette2: #f0413c;
+  --palette2: #cd1c16;
   --palette3: #f5834d;
   --palette4: #ffcc63;
   --palette5: #80201f;
+  --palette6: #a1aeff;
 
   --foreground-rgb: var(--palette1);
+  --background-rgb: var(--palette2);
+
   --background-start-rgb: var(--palette2);
   --background-end-rgb: var(--palette5);
 
@@ -92,17 +95,19 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: var(--foreground-rgb);
+
+
   background: linear-gradient(
       to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
+      var(--background-end-rgb)
     )
-    rgb(var(--background-start-rgb));
+    var(--background-start-rgb);
 }
 
 a {
-  color: inherit;
+  color: var(--palette6);
   text-decoration: none;
 }
 

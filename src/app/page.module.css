@@ -105,13 +105,14 @@
   transform: translateZ(0);
 }
 
-.lectureTable {
-  border-collapse: collapse;
-}
-
 .logo {
   position: relative;
 }
+
+img.logoImage {
+  max-width:10%;
+}
+
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   .card:hover {
