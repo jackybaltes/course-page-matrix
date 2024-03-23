@@ -1,24 +1,48 @@
 import React, { FC } from 'react';
 import styles from './lecture_entry_row.module.css';
 
-interface iLectureEntryRowProps {
+interface ILectureEntryRowProps {
     rkey: string;
     title: string;
     url: string;
     posted?: string;
-}
+    video?:string;
+};
 
-const LectureEntryRow: FC<iLectureEntryRowProps> = ({rkey, title, url, posted}) => {
-    return (
-        <tr key={rkey} className={styles.lectureRow}>
-            <td className={styles.lectureTitle}>
-                <a href={url}>{title}</a>
-            </td>
-            <td className={styles.lecturePosted}>
-                {posted}
-            </td>
-        </tr>
-    );
+const LectureEntryRow: FC<ILectureEntryRowProps> = ({rkey, title, url, posted, video}) => {
+    let vs = "";
+    if (video) {
+        console.log(`Adding video embed ${video}`);
+        vs = `<br><iframe width="400" height="230" src="${video}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+        
+    }
+
+    console.log(`lectureentryrow ${title} ${url} ${video} ${posted} ${vs}`);
+
+    if (video) {
+        return (
+            <tr key={rkey} className={styles.lectureRow}>
+                <td className={styles.lectureTitle}>
+                    <a href={url}>{title}</a>
+                    <iframe width="320" height="240" src={video} title={title} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </td>
+                <td className={styles.lecturePosted}>
+                    {posted}
+                </td>
+            </tr>
+        );
+    } else {
+        return (
+            <tr key={rkey} className={styles.lectureRow}>
+                <td className={styles.lectureTitle}>
+                    <a href={url}>{title}</a>
+                </td>
+                <td className={styles.lecturePosted}>
+                    {posted}
+                </td>
+            </tr>
+        );
+    }
   }
   
   export default LectureEntryRow;

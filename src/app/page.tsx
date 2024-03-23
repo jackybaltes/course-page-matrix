@@ -5,33 +5,59 @@ import styles from "./page.module.css";
 import { useRef, useEffect, useState } from "react";
 import LectureBlock from "../components/lectures_block";
 import Footer from "./footer";
-import createMatrixClient from "./matrix_client";
+import * as msdk from "matrix-js-sdk";
+import {JBMatrixClient, createJBMatrixClient} from "./jb_matrix_client";
 
 export default function Home() {
-  const [messages, setMessages ] = useState<Array<string>>();
+  console.log("Home.useEffect");
+
+  const [messages, setMessages ] = useState<Array<msdk.MatrixEvent>>([]);
 
   useEffect(() => {
-    console.log("Home.useEffect");
-    const client = createMatrixClient( 
+    let JBclient : JBMatrixClient = createJBMatrixClient( 
       "https://www.matrix.org", 
       "@ntnu-erc-reader-1a:matrix.org",
-      "syt_bnRudS1lcmMtcmVhZGVyLTFh_HicJEMSbJMeVtwQbXGjA_4aVyyo"
+      "syt_bnRudS1lcmMtcmVhZGVyLTFh_ExUCCTTEfPrGsfBTfmBa_2GXjQy"
     );
-    const roomId = "!AKUFkbbXmXnfsNPLJr:matrix.org";
-    client.connect();
+    const roomId = "!jaUuTGEmyDnPdRrzwz:matrix.org";
+    JBclient.connect();
+  
+    JBclient.sync(roomId, 1000);
 
-    client.sync(roomId, 1000).then( () => {
-      console.log("Room synced");
-    });
+    JBclient!.once(msdk.ClientEvent.Sync, (state:msdk.SyncState) => {
+      console.log(`client sync resolved ${state}`);
+      if (state == msdk.SyncState.Prepared) {
+        JBclient.getMessages(roomId, (event : msdk.MatrixEvent) => {
+          console.log(`Retrieved event ${JSON.stringify(event)}`);
+          if (event.getType() == msdk.EventType.RoomMessage) {
+            let content = event.getContent();
+            if (content) {
+              if ((content.msgtype == msdk.MsgType.Text) || (content.msgtype == msdk.MsgType.Notice)) {
+                setMessages( (prevMessages) => {
+                  return [
+                    ...prevMessages!,
+                    event
+                  ]
+                });  
 
-    client.getMessages(roomId).then( (messages) => {
-      console.log(`useEffect:retrived messages ${JSON.stringify(messages)}`);
-      setMessages(messages);
-    });
+              }
+            }
+          }
+        });
+
+        // let messages = JBclient.getMessages(roomId).then((messages) => {
+        //   console.log(`Retrieved messages from ${roomId}`);
+        //   for(let i = 0; i < messages.length;i++) {
+        //     console.log(`${i} `)
+        //   }
+        // });        
+      }
+    });  
+  
     return () => {
-      client.disconnect();
+      JBclient.disconnect();
     }
-  });
+  }, []);
 
   let lectures: Array<{key: string, title: string, url: string, posted: string}> =[
     {key: "1", title: "Test1", url:"https:1.html", posted: "20-2-2024"},
@@ -42,8 +68,18 @@ export default function Home() {
     <>
       <main className={styles.main}>
         <h1 className={styles.title}>Complex Motion Planning</h1>
-              
-        <LectureBlock lectures={lectures}/>
+        <ul>
+        {
+          messages.map( (event:msdk.MatrixEvent) => {
+            return (
+              <li key={event.getId()}>
+                {event.sender?.name}:{event.getContent()?.body}
+              </li>
+            )
+          })
+        }      
+        </ul>
+        <LectureBlock messages={messages}/>
         <h2 className={styles.h2}>Assignments</h2>
         <p>Assignments should be done individually.</p>
 
