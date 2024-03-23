@@ -5,7 +5,7 @@ interface ILectureEntryRowProps {
     rkey: string;
     title: string;
     url: string;
-    posted?: string;
+    posted: string;
     video?:string;
 };
 
@@ -24,7 +24,7 @@ const LectureEntryRow: FC<ILectureEntryRowProps> = ({rkey, title, url, posted, v
             <tr key={rkey} className={styles.lectureRow}>
                 <td className={styles.lectureTitle}>
                     <a href={url}>{title}</a>
-                    <iframe width="320" height="240" src={video} title={title} frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe width="320" height="240" src={video} title={title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
                 </td>
                 <td className={styles.lecturePosted}>
                     {posted}

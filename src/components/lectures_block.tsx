@@ -8,7 +8,7 @@ interface ILecturesBlockProps {
 };
 
 const LecturesBlock: FC<ILecturesBlockProps> = ({messages}) => {
-    const lectures = new Array<{key:string,title:string,url:string, posted?:string, video?:string}>();
+    const lectures = new Array<{key:string,title:string,url:string, posted:string, video?:string}>();
     const slidesRE = new RegExp(' *Slides *: *(?<title>.*) - (?<url>.*)');
     const lectureRE = new RegExp(' *Lecture *: *(?<title>.*) - (?<url>.*)');
 
