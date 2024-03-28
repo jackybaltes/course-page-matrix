@@ -1,6 +1,20 @@
-.assignmentBlockTable {
+.assignmentsBlockTable {
     border-collapse: collapse;
-    width:90%;
+    width:90vw;
+    border-style: 3px solid #d0d0d0;
 }
 
+.assignmentsBlockH2 {
+    text-align: center;
+}
 
+.assignmentsBlockTh,
+.assignmentsBlockTd {
+    border-style: solid;
+}
+
+.assignmentsBlockTdDue {
+    border-style: solid;
+    text-align: right;
+    width: 30%;
+}

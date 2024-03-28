@@ -1,8 +1,13 @@
 .chatBlockTable {
     border-collapse: collapse;
-    width:90%;
+    width:90vw;
     background: #c0c0c0;
     color: #202020;
+    border-style: 3px solid #d0d0d0;
+}
+
+.chatBlockH2 {
+    text-align:center;
 }
 
 .chatMsgSender {

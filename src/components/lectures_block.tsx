@@ -50,7 +50,7 @@ const LecturesBlock: FC<ILecturesBlockProps> = ({messages}) => {
 
     return (
         <div className={styles.lecturesBlock}>
-            <h2 className={styles.h2}>Lectures</h2>
+            <h2 className={styles.lecturesBlockH2}>Lectures</h2>
             <p>Link to <a href="https://colab.research.google.com/">Google collaboratory</a> notebooks used in the course.</p>
 
             <table className={styles.lecturesBlockTable}>

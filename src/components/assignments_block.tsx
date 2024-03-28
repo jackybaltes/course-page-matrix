@@ -45,30 +45,32 @@ const AssignmentBlock: FC<IAssignmentBlock> = ({messages}) => {
     //console.log(`AssignmentBox: assignments ${JSON.stringify(assignments)}`);
 
     return (
-        <div className={styles.assignmentBlock}>
-            <h2 className={styles.assignmentH2}>Assignments</h2>
+        <div className={styles.assignmentsBlock}>
+            <h2 className={styles.assignmentsH2}>Assignments</h2>
             
-            <table className={styles.assignmentBlockTable}>
-            <thead>
-                <tr>
-                <th>
-                    Title
-                </th>
-                <th>
-                    Due Date
-                </th>
-                </tr>
-            </thead>
-            <tbody>
-            {
-            assignments.map( (item) => (
-                <tr key={1}>
-                    <td><a href={item.url}>{item.title}</a></td><td>{item.due}</td>
-                </tr>
-            ))
-            }
-            </tbody>
-            </table>
+            <div className={styles.assignmentsBlockTable}>
+                <table className={styles.assignmentsBlockTable}>
+                    <thead>
+                        <tr>
+                        <th className={styles.assignmentsBlockTh}>
+                            Title
+                        </th>
+                        <th className={styles.assignmentsBlockTh}>
+                            Due Date
+                        </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {
+                    assignments.map( (item) => (
+                        <tr key={1}>
+                            <td className={styles.assignmentsBlockTd}><a href={item.url}>{item.title}</a></td><td className={styles.assignmentsBlockTdDue}>{item.due}</td>
+                        </tr>
+                    ))
+                    }
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

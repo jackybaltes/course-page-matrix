@@ -3,7 +3,7 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import { useRef, useEffect, useState } from "react";
-import lecturesBlock from "../components/lectures_block";
+import LecturesBlock from "../components/lectures_block";
 import ChatBlock from "../components/chat_block";
 import AssignmentBlock from '../components/assignments_block';
 import Footer from "./footer";
@@ -76,7 +76,7 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>Complex Motion Planning</h1>
         <ChatBlock messages={messages} max_messages={5}/>
-        <lecturesBlock messages={messages}/>
+        <LecturesBlock messages={messages}/>
         <AssignmentBlock messages={messages}/>
         <Footer/>
       </main>

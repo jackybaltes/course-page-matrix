@@ -1,4 +1,9 @@
 .lecturesBlockTable {
     border-collapse: collapse;
-    width:90%;
+    width:90vw;
+    border-style: 3px solid #d0d0d0;
+}
+
+.lecturesBlockH2 {
+    text-align:center;
 }

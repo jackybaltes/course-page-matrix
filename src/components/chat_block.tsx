@@ -25,7 +25,7 @@ const ChatBlock: FC<IChatBlockProps> = ({messages, max_messages}) => {
 
     return (
         <div className={styles.chatBlock}>
-            <h2 className={styles.h2}>Chat History</h2>
+            <h2 className={styles.chatBlockH2}>Chat History</h2>
             <p>Join the matrix channel for access to the lecture material</p>
 
             <table className={styles.chatBlockTable}>
