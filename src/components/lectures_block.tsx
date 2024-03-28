@@ -12,7 +12,7 @@ const LecturesBlock: FC<ILecturesBlockProps> = ({messages}) => {
     const slidesRE = new RegExp(' *Slides *: *(?<title>.*) - (?<url>.*)');
     const lectureRE = new RegExp(' *Lecture *: *(?<title>.*) - (?<url>.*)');
 
-    console.log(`lectureBlock messages ${messages}`);
+    console.log(`lecturesBlock messages ${messages}`);
     if(messages) {
         for(let e of messages) {
             let content = e.getContent();
