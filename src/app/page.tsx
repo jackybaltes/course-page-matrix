@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 import { useRef, useEffect, useState } from "react";
 import LectureBlock from "../components/lectures_block";
 import ChatBlock from "../components/chat_block";
-import AssignmentBlock from '../components/assignment_block';
+import AssignmentBlock from '../components/assignments_block';
 import Footer from "./footer";
 import * as msdk from "matrix-js-sdk";
 import {JBMatrixClient, createJBMatrixClient} from "./jb_matrix_client";

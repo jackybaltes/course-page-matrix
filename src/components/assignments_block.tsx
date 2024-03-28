@@ -1,8 +1,6 @@
 import React, { FC } from 'react';
-import styles from './lectures_block.module.css';
-import LectureEntryRow from "../components/lecture_entry_row";
+import styles from './assignments_block.module.css';
 import * as msdk from "matrix-js-sdk";
-import { JBMatrixClient } from '@/app/jb_matrix_client';
 
 interface IAssignmentBlock {
     messages: Array<msdk.MatrixEvent>;
