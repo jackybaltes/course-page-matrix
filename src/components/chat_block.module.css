@@ -1,0 +1,10 @@
+.chatBlockTable {
+    border-collapse: collapse;
+    width:90%;
+    background: #c0c0c0;
+    color: #202020;
+}
+
+.chatMsgSender {
+    color: #2020f0;
+}

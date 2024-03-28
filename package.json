@@ -2,12 +2,13 @@
   "name": "complex-motion-planning",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://jackybaltes.github.io/course-page-matrix",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && touch > ./out/.nojekyll",
+    "build": "next build && touch ./out/.nojekyll",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "gh-pages --dist out/ --repo github"
+    "deploy": "gh-pages --dist ./out/ --remote gh-pages --nojekyll"
   },
   "dependencies": {
     "gh-pages": "^6.1.1",
@@ -15,7 +16,8 @@
     "next": "14.1.0",
     "pnpm": "^8.15.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "sharp": "^0.33.3"
   },
   "devDependencies": {
     "@types/node": "^20",

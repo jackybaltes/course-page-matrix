@@ -4,6 +4,8 @@ import Link from "next/link";
 import styles from "./page.module.css";
 import { useRef, useEffect, useState } from "react";
 import LectureBlock from "../components/lectures_block";
+import ChatBlock from "../components/chat_block";
+import AssignmentBlock from '../components/assignment_block';
 import Footer from "./footer";
 import * as msdk from "matrix-js-sdk";
 import {JBMatrixClient, createJBMatrixClient} from "./jb_matrix_client";
@@ -32,14 +34,19 @@ export default function Home() {
           if (event.getType() == msdk.EventType.RoomMessage) {
             let content = event.getContent();
             if (content) {
-              if ((content.msgtype == msdk.MsgType.Text) || (content.msgtype == msdk.MsgType.Notice)) {
+              if ((content.msgtype == msdk.MsgType.Text) || (content.msgtype == msdk.MsgType.Notice)||(content.msgtype==msdk.MsgType.File)) {
+                if (content.msgtype == msdk.MsgType.File) {
+                  let url = JBclient.mxcUrlToHttp(content.url);
+                  if (url !== null) {
+                    content.url = url;
+                  }
+                }
                 setMessages( (prevMessages) => {
                   return [
                     ...prevMessages!,
                     event
                   ]
                 });  
-
               }
             }
           }
@@ -68,26 +75,9 @@ export default function Home() {
     <>
       <main className={styles.main}>
         <h1 className={styles.title}>Complex Motion Planning</h1>
-        <ul>
-        {
-          messages.map( (event:msdk.MatrixEvent) => {
-            return (
-              <li key={event.getId()}>
-                {event.sender?.name}:{event.getContent()?.body}
-              </li>
-            )
-          })
-        }      
-        </ul>
+        <ChatBlock messages={messages} max_messages={5}/>
         <LectureBlock messages={messages}/>
-        <h2 className={styles.h2}>Assignments</h2>
-        <p>Assignments should be done individually.</p>
-
-        <div className={styles.assignment}>
-          <ul>
-            <li><Link className="styles.alink" href="assignments/rock-climbing-robots">Rock Climbing Robot</Link></li>
-          </ul>
-        </div>
+        <AssignmentBlock messages={messages}/>
         <Footer/>
       </main>
     </>

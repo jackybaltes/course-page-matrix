@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     "output": "export",
+    "basePath": "/course-page-matrix",
     "images": { unoptimized: true }
 };
 
