@@ -2,11 +2,13 @@ import * as msdk from "matrix-js-sdk";
 
 export type JBMatrixClient = {
   connect: () => void,
-  sync: (roomId:string, initialSyncLimit:number) => Promise<void>,
+  sync: (roomId:string|msdk.Room, initialSyncLimit:number) => Promise<void>,
   getMessages: (roomId: string, handler?: (event: msdk.MatrixEvent) => void) => Promise<Array<msdk.MatrixEvent>>,
   disconnect: () => Promise<void>,
   once: (state: msdk.ClientEvent, handler: (state: msdk.SyncState, lastState: msdk.SyncState|null, data?: msdk.SyncStateData) => void) => void
   mxcUrlToHttp: (mxc: string) => string|null;
+  getJoinedRooms: () => Promise<Array<string>>;
+  getRoom: (roomId: string) => msdk.Room|null;
 };
 
 export function createJBMatrixClient(baseUrl: string, userId: string, accessToken: string) : JBMatrixClient {
@@ -14,7 +16,7 @@ export function createJBMatrixClient(baseUrl: string, userId: string, accessToke
 
   return {
     connect() {
-      if (client === null) {
+      if (client == null) {
         client = msdk.createClient({
           baseUrl: baseUrl,
           userId: userId,
@@ -27,9 +29,13 @@ export function createJBMatrixClient(baseUrl: string, userId: string, accessToke
         console.log("Warning: client already connected");
       }
     },
-    async sync( roomId:string, initialSyncLimit:number) {
-      if (client !== null) {
-        await _sync(client, roomId, initialSyncLimit);
+    async sync( roomId:string|msdk.Room, initialSyncLimit:number) {
+      if (client != null) {
+        if (typeof(roomId) === typeof(msdk.Room)) {
+          let room = (roomId as msdk.Room);
+          roomId = room.roomId;
+        }
+        await _sync(client, (roomId as string), initialSyncLimit);
       } else {
         console.log("Warning: sync client is null");
       }
@@ -37,7 +43,7 @@ export function createJBMatrixClient(baseUrl: string, userId: string, accessToke
     async getMessages(roomId: string, handler?: (event: msdk.MatrixEvent) => void) : Promise<Array<msdk.MatrixEvent>> {
       let messages = new Array<msdk.MatrixEvent>();
 
-      if (client !== null) {
+      if (client != null) {
         _getMessages(client, roomId, messages, handler);
       } else {
         console.log("Warning: getMessages client is null");
@@ -45,7 +51,7 @@ export function createJBMatrixClient(baseUrl: string, userId: string, accessToke
       return messages;
     },
     async disconnect() {
-      if (client !== null) {
+      if (client != null) {
         console.log(`Disconnecting client`);
         client = null;
       } else {
@@ -54,7 +60,7 @@ export function createJBMatrixClient(baseUrl: string, userId: string, accessToke
       
     },
     once(state: msdk.ClientEvent, handler: (state: msdk.SyncState, lastState: msdk.SyncState|null, data?: msdk.SyncStateData) => void) {
-      if (client !== null) {
+      if (client != null) {
         client.once( state, handler);
       } else {
         console.log("matrix_client once. client is null");
@@ -62,10 +68,28 @@ export function createJBMatrixClient(baseUrl: string, userId: string, accessToke
     },
     mxcUrlToHttp( mxc: string) {
       let s : string | null = mxc;
-      if (client !== null) {
+      if (client != null) {
         s = client.mxcUrlToHttp(mxc);
       }
       return s;
+    },
+    async getJoinedRooms() {
+      let rooms = new Array<string>();
+      if (client != null) {
+        let value = await client.getJoinedRooms(); 
+        let room_ids = value.joined_rooms;
+        for(let r of room_ids) {
+          rooms.push(r);
+        }
+      }
+      return rooms;
+    },
+    getRoom(roomId: string) {
+      let room = null;
+      if ( client != null) {
+        room = client.getRoom(roomId);
+      }
+      return room;
     }
   }
 }
