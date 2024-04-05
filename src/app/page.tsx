@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from "react";
 import LecturesBlock from "../components/lectures_block";
 import ChatBlock from "../components/chat_block";
 import AssignmentBlock from '../components/assignments_block';
+import CourseSelector from '../components/course_selector';
 import Footer from "./footer";
 import * as msdk from "matrix-js-sdk";
 import { JBMatrixClient, createJBMatrixClient } from "./jb_matrix_client";
@@ -12,8 +13,10 @@ import { JBMatrixClient, createJBMatrixClient } from "./jb_matrix_client";
 export default function Home() {
   console.log("Home.useEffect");
 
+  const [JBclient, setJBclient] = useState<JBMatrixClient>();
   const [messages, setMessages] = useState<Array<msdk.MatrixEvent>>([]);
-  const [agentRooms, setAgentRooms] = useState<Array<{room_id: string, room_name: string}>>([]);
+  const [agentRooms, setAgentRooms] = useState<Array<msdk.Room>>([]);
+  const [selectedCourse, setSelectedCourse] = useState<msdk.Room|null>(null);
 
   useEffect(() => {
     let JBclient: JBMatrixClient = createJBMatrixClient(
@@ -22,6 +25,8 @@ export default function Home() {
       "syt_bnRudS1lcmMtcmVhZGVyLTFh_ExUCCTTEfPrGsfBTfmBa_2GXjQy"
     );
     //const roomId = "!jaUuTGEmyDnPdRrzwz:matrix.org";
+    setJBclient(JBclient);
+
     JBclient.connect();
 
     JBclient.getJoinedRooms().then((rooms) => {
@@ -35,49 +40,51 @@ export default function Home() {
 
         JBclient!.once(msdk.ClientEvent.Sync, (state: msdk.SyncState) => {
           console.log(`client sync resolved ${state}`);
-          if (state == msdk.SyncState.Prepared) {
-            JBclient.getMessages(roomId, (event: msdk.MatrixEvent) => {
-              console.log(`Retrieved event ${JSON.stringify(event)}`);
-              if (event.getType() == msdk.EventType.RoomMessage) {
-                let content = event.getContent();
-                if (content) {
-                  if ((content.msgtype == msdk.MsgType.Text) || (content.msgtype == msdk.MsgType.Notice) || (content.msgtype == msdk.MsgType.File)) {
-                    if (content.msgtype == msdk.MsgType.File) {
-                      let url = JBclient.mxcUrlToHttp(content.url);
-                      if (url !== null) {
-                        content.url = url;
-                      }
-                    }
-                    setMessages((prevMessages) => {
-                      return [
-                        ...prevMessages!,
-                        event
-                      ]
-                    });
-                  }
-                }
-              }
-            });
-
-            let gRoom = JBclient.getRoom(roomId);
-            if (gRoom != null) {
-              setAgentRooms( (prevRooms) => {
-                return [
-                  ...prevRooms!,
-                  { room_id: roomId, room_name: gRoom.name}
-                ]
-              });  
-            }
-            console.log(`Home useEffect room list ${JSON.stringify(agentRooms)}`);
+          
+          let gRoom = JBclient.getRoom(roomId);
+          if (gRoom != null) {
+            setAgentRooms( (prevRooms) => {
+              return [
+                ...prevRooms!,
+                gRoom
+              ]
+            });  
           }
         });
       }
     });
-
     return () => {
       JBclient.disconnect();
     }
-  }, []);
+  },[]);
+
+  useEffect(() => {
+    if ((JBclient) && (selectedCourse)) {
+      setMessages([]);
+      JBclient.getMessages(selectedCourse.roomId, (event: msdk.MatrixEvent) => {
+        console.log(`Retrieved event ${JSON.stringify(event)}`);
+        if (event.getType() == msdk.EventType.RoomMessage) {
+          let content = event.getContent();
+          if (content) {
+            if ((content.msgtype == msdk.MsgType.Text) || (content.msgtype == msdk.MsgType.Notice) || (content.msgtype == msdk.MsgType.File)) {
+              if (content.msgtype == msdk.MsgType.File) {
+                let url = JBclient.mxcUrlToHttp(content.url);
+                if (url !== null) {
+                  content.url = url;
+                }
+              }
+              setMessages((prevMessages) => {
+                return [
+                  ...prevMessages!,
+                  event
+                ]
+              });
+            }
+          }
+        }
+      });  
+    }
+  },[selectedCourse]);
 
   // let lectures: Array<{ key: string, title: string, url: string, posted: string }> = [
   //   { key: "1", title: "Test1", url: "https:1.html", posted: "20-2-2024" },
@@ -87,7 +94,8 @@ export default function Home() {
   return (
     <>
       <main className={styles.main}>
-        <h1 className={styles.title}>Complex Motion Planning</h1>
+        <h1 className={styles.title}>NTNU ERC Course Information</h1>
+        <CourseSelector rooms={agentRooms} setSelectedCourse={setSelectedCourse} />
         <ChatBlock messages={messages} max_messages={5} />
         <LecturesBlock messages={messages} />
         <AssignmentBlock messages={messages} />

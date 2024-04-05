@@ -17,6 +17,7 @@
     "pnpm": "^8.15.5",
     "react": "^18",
     "react-dom": "^18",
+    "react-widgets": "^5.8.4",
     "sharp": "^0.33.3"
   },
   "devDependencies": {
