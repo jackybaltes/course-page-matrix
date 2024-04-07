@@ -1,0 +1,10 @@
+.courseSelectorSelect {
+    font-size: 32px;
+    background-color: inherit;
+    color: inherit;
+}
+
+.courseSelectorSelect option {
+    background-color: var(--background-rgb);
+    color: var(--foreground-rgb);
+}
