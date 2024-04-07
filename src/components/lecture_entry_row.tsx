@@ -16,7 +16,7 @@ const LectureEntryRow: FC<ILectureEntryRowProps> = ({rkey, title, url, posted, v
         const youtubeRE = new RegExp('https?://www.(youtube.com)|(youtu.be)/(?<vid>[^/]+)$');
 
         let m = video.match(youtubeRE);
-        if (m) {
+        if ((m) && (m.groups)) {
             video = "https://www.youtube.com/embed/" + m.groups['vid'];
         }
         vs = `<br><iframe width="400" height="230" src="${video}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;

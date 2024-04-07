@@ -46,10 +46,14 @@ export default function Home() {
             setAgentRooms( (prevRooms) => {
               return [
                 ...prevRooms!,
-                gRoom
+                gRoom!
               ]
             });  
           }
+
+          if(agentRooms.length > 0) {
+            setSelectedCourse(agentRooms[0]);
+          } 
         });
       }
     });
@@ -84,7 +88,7 @@ export default function Home() {
         }
       });  
     }
-  },[selectedCourse]);
+  },[JBclient,selectedCourse]);
 
   // let lectures: Array<{ key: string, title: string, url: string, posted: string }> = [
   //   { key: "1", title: "Test1", url: "https:1.html", posted: "20-2-2024" },
@@ -95,7 +99,7 @@ export default function Home() {
     <>
       <main className={styles.main}>
         <h1 className={styles.title}>NTNU ERC Course Information</h1>
-        <CourseSelector rooms={agentRooms} setSelectedCourse={setSelectedCourse} />
+        <CourseSelector rooms={agentRooms} selectedCourse={selectedCourse} setSelectedCourse={setSelectedCourse} />
         <ChatBlock messages={messages} max_messages={5} />
         <LecturesBlock messages={messages} />
         <AssignmentBlock messages={messages} />

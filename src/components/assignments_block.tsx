@@ -13,7 +13,7 @@ const AssignmentBlock: FC<IAssignmentBlock> = ({messages}) => {
 
     console.log(`assignmentBlock messages ${messages}`);
     if(messages) {
-        let http_url : string;
+        let http_url : string = "";
         for(let e of messages) {
             let content = e.getContent();
             let body = content.body;
