@@ -20,7 +20,7 @@ const CourseSelector: FC<ICourseSelectorProps> = ({rooms, selectedCourse, setSel
     const lectureRooms = new Array<msdk.Room>();
 
     for( let r of rooms ) {
-        if (r.name.indexOf("Examination") < 0) {
+        if (r.name.indexOf(" - Lectures") >= 0) {
             lectureRooms.push(r);
         }
     }
@@ -48,6 +48,7 @@ const CourseSelector: FC<ICourseSelectorProps> = ({rooms, selectedCourse, setSel
         const room = lectureRooms.find((room) => {
             return room.roomId == event.target.value;
         });
+        (event.target as HTMLSelectElement).value = getCourseName(room!);
         setMySelectedCourse(room!);
         setSelectedCourse(room!);
     }
