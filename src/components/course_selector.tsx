@@ -67,7 +67,7 @@ const CourseSelector: FC<ICourseSelectorProps> = ({rooms, selectedCourse, setSel
 
     return (
         <>
-            <select className={styles.courseSelectorSelect} value="Value is set ..." onChange={handleSelectCourseChange}>
+            <select className={styles.courseSelectorSelect} value={getCourseName(mySelectedCourse!)} onChange={handleSelectCourseChange}>
             {
                 lectureRooms.map((room) => {
                     let cname = getCourseName(room);
