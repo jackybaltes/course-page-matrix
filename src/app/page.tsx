@@ -60,7 +60,7 @@ export default function Home() {
     return () => {
       JBclient.disconnect();
     }
-  },[agentRooms]);
+  },[]);
 
   useEffect(() => {
     if ((JBclient) && (selectedCourse)) {

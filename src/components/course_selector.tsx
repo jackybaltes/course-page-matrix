@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, useState, Dispatch, SetStateAction } from 'react';
 import styles from './course_selector.module.css';
 import * as msdk from "matrix-js-sdk";
-import Combobox from "react-widgets/Combobox";
+import DropdownList from "react-widgets/DropdownList";
 
 interface ICourseSelectorProps {
     rooms: Array<msdk.Room>;
@@ -55,12 +55,14 @@ const CourseSelector: FC<ICourseSelectorProps> = ({rooms, selectedCourse, setSel
     
     //setSelectedCourse(null);
 
-    let roomLink = "";
-    
+    let roomLink : string = "";
+    let summary : string = "";
+
     if(mySelectedCourse) {
         const aliases = mySelectedCourse.getAltAliases();
         console.log(`CourseSelector room ${mySelectedCourse.roomId} find Aliases ${JSON.stringify(aliases)}`);
         roomLink = `<h3>Link to join room <a href=${mySelectedCourse.roomId}>${mySelectedCourse.name}</a></h3>`
+        summary = mySelectedCourse.summary?.info;
     }
 
     // {mySelectedCourse ? getCourseName(mySelectedCourse):"Select Course..."}
@@ -79,6 +81,9 @@ const CourseSelector: FC<ICourseSelectorProps> = ({rooms, selectedCourse, setSel
                 })
             }
             </select>
+            <div className={styles.courseRoomName}>
+                <p>{summary}</p>
+            </div>
             <div className={styles.courseRoomName}>
                 {
                     roomLink
