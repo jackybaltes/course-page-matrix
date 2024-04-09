@@ -84,9 +84,7 @@ const CourseSelector: FC<ICourseSelectorProps> = ({rooms, selectedCourse, setSel
                 <p>{summary}</p>
             </div>
             <div className={styles.courseRoomName}>
-                {
-                    roomLink
-                }
+                <p>roomLink</p>
             </div>
         </>
     );
