@@ -36,9 +36,9 @@ concurrency:
           node-version: "20"
       - name: Install pnpm
         uses: pnpm/action-setup@v3
-          with:
-            version: 8
-            run_install: false
+        with:
+          version: 8
+          run_install: false
       - name: Get pnpm store directory
         shell: bash
         run: |
