@@ -1,7 +1,6 @@
 import React, { ChangeEvent, FC, useState, Dispatch, SetStateAction } from 'react';
 import styles from './course_selector.module.css';
 import * as msdk from "matrix-js-sdk";
-import DropdownList from "react-widgets/DropdownList";
 
 interface ICourseSelectorProps {
     rooms: Array<msdk.Room>;
