@@ -47,9 +47,13 @@ const CourseSelector: FC<ICourseSelectorProps> = ({rooms, selectedCourse, setSel
         const room = lectureRooms.find((room) => {
             return room.roomId == event.target.value;
         });
-        (event.target as HTMLSelectElement).value = getCourseName(room!);
-        setMySelectedCourse(room!);
-        setSelectedCourse(room!);
+        console.log(`handleSelectCourseChange ${room}`);
+
+        if (room) {
+            (event.target as HTMLSelectElement).value = getCourseName(room);
+            setMySelectedCourse(room!);
+            setSelectedCourse(room!);
+        }
     }
     
     //setSelectedCourse(null);
@@ -66,21 +70,23 @@ const CourseSelector: FC<ICourseSelectorProps> = ({rooms, selectedCourse, setSel
 
     return (
         <>
-            <select className={styles.courseSelectorSelect} value={mySelectedCourse ? getCourseName(mySelectedCourse!) : "Loading ..."} onChange={handleSelectCourseChange}>
-            {
-                lectureRooms.map((room) => {
-                    let cname = getCourseName(room);
-                    return (
-                        <option key={room.roomId} value={room.roomId}>
-                            {cname}
-                        </option>
-                    )
-                })
-            }
-            </select>
+            <label>
+                <select className={styles.courseSelectorSelect} onChange={handleSelectCourseChange}>
+                {
+                    lectureRooms.map((room) => {
+                        let cname = getCourseName(room);
+                        return (
+                            <option key={room.roomId} value={room.roomId}>
+                                {cname}
+                            </option>
+                        )
+                    })
+                }
+                </select>
+            </label>
 
             <div className={styles.courseRoomName}>
-                <p>roomLink</p>
+                <p>{roomLink}</p>
             </div>
         </>
     );
